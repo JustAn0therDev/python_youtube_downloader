@@ -2,6 +2,7 @@ from tkinter.ttk import Combobox
 from tkinter import Tk, StringVar, Label, Entry, Button, messagebox
 from backend import YoutubeDownloader 
 from utils import Utils
+from streamoptions import StreamOptions
 
 
 class GUI:
@@ -27,7 +28,7 @@ class GUI:
         self.create_entries()
         self.create_comboboxes()
 
-    def create_labels(self):
+    def create_labels(self) -> None:
         Label(self.__window, 
                 text = 'YouTube URL:', 
                 font='arial').place(x=self.__x_axis, y=200)
@@ -44,7 +45,7 @@ class GUI:
                 text='Insert the desired directory from the root:',
                 font='arial').place(x=self.__x_axis, y=450)
 
-    def create_buttons(self):
+    def create_buttons(self) -> None:
         Button(self.__window,
                 text='Download', 
                 font='arial', 
@@ -53,7 +54,7 @@ class GUI:
                 padx=15,
                 command=self.download_video).place(x=self.__x_axis, y=520)
 
-    def create_entries(self):
+    def create_entries(self) -> None:
         Entry(self.__window, 
                 width=40,
                 textvariable=self.__user_youtube_url).place(x=self.__x_axis, y=230)
@@ -64,30 +65,41 @@ class GUI:
                 width=40,
                 textvariable=self.__directory).place(x=self.__x_axis, y=480)
 
-    def create_comboboxes(self):
+    def create_comboboxes(self) -> None:
         self.__res_combobox = Combobox(self.__window, 
-                values=['240p', '360p', '480p', '720p', '1080p'], 
+                values=['Auto', '144p', '240p', '360p', '480p', '720p', '1080p'], 
                 state='readonly', textvariable=self.__stream_quality).place(x=self.__x_axis, y=290)
         self.__stream_combobox = Combobox(self.__window,
-                values=['Only video', 'Only audio', 'Video and audio'],
+                values=[StreamOptions.ONLY_VIDEO, StreamOptions.ONLY_AUDIO, StreamOptions.VIDEO_AND_AUDIO],
                 state='readonly', textvariable=self.__stream_option).place(x=self.__x_axis, y=350)
 
-    def download_video(self):
+    def download_video(self) -> None:
         try:
-            if not self.__user_youtube_url.get():
-                raise Exception('The URL field cannot be empty!')
+            self.validate_required_values()
             youtube_downloader = YoutubeDownloader(
                     self.__user_youtube_url.get(),
-                    has_audio=True,
-                    has_video=True,
-                    custom_filename='')
+                    self.__stream_option.get(),
+                    self.__stream_quality.get(),
+                    self.__custom_filename.get(),
+                    self.__directory.get())
+
             youtube_downloader.download_youtube_video()
 
             messagebox.showinfo(title='Success', message='Video was successfully downloaded!')
         except Exception as error:
             messagebox.showerror(title='error', message=str(error))
 
-    def initialize(self):
+    def validate_required_values(self) -> None:
+            if not self.__user_youtube_url.get():
+                raise Exception('The URL field cannot be empty!')
+
+            if not self.__stream_quality.get():
+                raise Exception('Select a stream quality')
+
+            if not self.__stream_option.get():
+                raise Exception('Select a stream option')
+
+    def initialize(self) -> None:
         self.__window.mainloop()
 
 gui = GUI()
