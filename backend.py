@@ -56,4 +56,3 @@ class YoutubeDownloader:
             video_stream.download(filename=self.__custom_filename)
         else:
             video_stream.download()
-

@@ -1,5 +1,4 @@
-from tkinter import *
-from tkinter import messagebox
+from tkinter import Tk, StringVar, Label, Entry, Button, messagebox
 from backend import YoutubeDownloader 
 
 
@@ -41,7 +40,7 @@ class GUI:
             youtube_downloader = YoutubeDownloader(
                     self.__user_youtube_url.get(),
                     has_audio=True,
-                    has_video=False,
+                    has_video=True,
                     custom_filename='')
             youtube_downloader.download_youtube_video()
 
