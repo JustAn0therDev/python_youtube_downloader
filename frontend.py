@@ -15,7 +15,7 @@ class GUI:
         self.__window = Tk()
         self.__window.resizable(0,0)
         self.__window.title('Youtube Video Downloader')
-        self.__window.geometry('600x600')
+        self.__window.geometry('700x700')
 
         self.__user_youtube_url = StringVar()
         self.__stream_quality = StringVar()
