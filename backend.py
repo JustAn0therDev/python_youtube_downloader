@@ -31,13 +31,12 @@ class YoutubeDownloader:
         return download_was_successful
 
     def get_stream_object(self, youtube_video) -> any:
-        resolution = ''
         if self.__stream_option == StreamOptions.ONLY_AUDIO:
             stream_to_download = youtube_video.streams\
             .filter(only_audio=True).first()
         elif self.__stream_option == StreamOptions.ONLY_VIDEO:
             stream_to_download = youtube_video.streams\
-            .filter(only_video=True, res=res.self.__stream_quality).first()
+            .filter(only_video=True, res=self.__stream_quality).first()
 
             """ Progressive is the old way of downloading video stream data.
                 It downloads both audio and video, unlike adaptive where
