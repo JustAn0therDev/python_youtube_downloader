@@ -20,14 +20,16 @@ class YoutubeDownloader:
 
     def download_youtube_video(self):
         youtube_video = YouTube(self.__youtube_video_link)
-        stream_data = self.get_stream_object(youtube_video)
+        stream_data = self.__get_stream_object(youtube_video)
 
         if not stream_data:
             raise Exception('Video quality not found!')
 
-        self.download_video_from_stream(stream_data)
+        self.__download_video_from_stream(stream_data)
 
-    def get_stream_object(self, youtube_video: YouTube) -> Stream:
+    def __get_stream_object(self, youtube_video: YouTube) -> Stream:
+        stream_to_download: Stream
+
         if self.__stream_option == StreamOptions.ONLY_AUDIO:
             stream_to_download = youtube_video.streams\
             .filter(only_audio=True).first()
@@ -40,12 +42,12 @@ class YoutubeDownloader:
 
         return stream_to_download
 
-    def download_video_from_stream(self, video_stream: Stream) -> None:
+    def __download_video_from_stream(self, stream_data: Stream) -> None:
         if self.__custom_filename and not self.__directory:
-            video_stream.download(filename=self.__custom_filename)
+            stream_data.download(filename=self.__custom_filename)
         elif self.__directory and not self.__custom_filename: 
-            video_stream.download(output_path=self.__directory)
+            stream_data.download(output_path=self.__directory)
         elif self.__custom_filename and self.__directory:
-            video_stream.download(filename=self.__custom_filename, output_path=self.__directory)
+            stream_data.download(filename=self.__custom_filename, output_path=self.__directory)
         else:
-            video_stream.download()
+            stream_data.download()
