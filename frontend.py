@@ -1,8 +1,8 @@
-from tkinter.ttk import Combobox
-from tkinter import Tk, StringVar, Label, Entry, Button, messagebox
-from backend import YoutubeDownloader 
 from utils import Utils
+from tkinter.ttk import Combobox
+from backend import YoutubeDownloader 
 from streamoptions import StreamOptions
+from tkinter import Tk, StringVar, Label, Entry, Button, messagebox
 
 
 class GUI:
@@ -84,7 +84,6 @@ class GUI:
                     self.__directory.get())
 
             youtube_downloader.download_youtube_video()
-
             messagebox.showinfo(title='Success', message='Video was successfully downloaded!')
         except Exception as error:
             messagebox.showerror(title='error', message=str(error))
@@ -104,4 +103,3 @@ class GUI:
 
 gui = GUI()
 gui.initialize()
-

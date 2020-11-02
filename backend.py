@@ -1,6 +1,7 @@
-from pytube import YouTube
 from utils import Utils
+from pytube import YouTube, Stream
 from streamoptions import StreamOptions
+
 
 class YoutubeDownloader:
 
@@ -17,38 +18,29 @@ class YoutubeDownloader:
         self.__custom_filename = custom_filename
         self.__directory = directory
 
-    def download_youtube_video(self) -> bool:
-        download_was_successful = False
+    def download_youtube_video(self):
         youtube_video = YouTube(self.__youtube_video_link)
-        video_stream = self.get_stream_object(youtube_video)
+        stream_data = self.get_stream_object(youtube_video)
 
-        if not video_stream:
+        if not stream_data:
             raise Exception('Video quality not found!')
 
-        self.download_video_from_stream(video_stream)
-        download_was_successful = True
-        
-        return download_was_successful
+        self.download_video_from_stream(stream_data)
 
-    def get_stream_object(self, youtube_video) -> any:
+    def get_stream_object(self, youtube_video: YouTube) -> Stream:
         if self.__stream_option == StreamOptions.ONLY_AUDIO:
             stream_to_download = youtube_video.streams\
             .filter(only_audio=True).first()
         elif self.__stream_option == StreamOptions.ONLY_VIDEO:
             stream_to_download = youtube_video.streams\
             .filter(only_video=True, res=self.__stream_quality).first()
-
-            """ Progressive is the old way of downloading video stream data.
-                It downloads both audio and video, unlike adaptive where
-                we can download specific types of data from the current stream
-            """
         else:
             stream_to_download = youtube_video.streams\
             .filter(progressive=True, res=self.__stream_quality).first()
 
         return stream_to_download
 
-    def download_video_from_stream(self, video_stream: any) -> None:
+    def download_video_from_stream(self, video_stream: Stream) -> None:
         if self.__custom_filename and not self.__directory:
             video_stream.download(filename=self.__custom_filename)
         elif self.__directory and not self.__custom_filename: 
@@ -57,4 +49,3 @@ class YoutubeDownloader:
             video_stream.download(filename=self.__custom_filename, output_path=self.__directory)
         else:
             video_stream.download()
-
