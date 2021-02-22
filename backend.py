@@ -28,12 +28,15 @@ class YoutubeDownloader:
         if self.__stream_option == 'Only audio':
             stream_with_chosen_quality = youtube_video.streams \
                 .filter(only_audio=True).first()
+
         elif self.__stream_option == 'Only video':
             stream_with_chosen_quality = youtube_video.streams \
                 .filter(only_video=True, res=self.__stream_quality).first()
+
         elif self.__stream_option == 'Video and audio':
             stream_with_chosen_quality = youtube_video.streams \
                 .filter(progressive=True, res=self.__stream_quality).first()
+
         else:
             raise Exception('Stream option not implemented')
 

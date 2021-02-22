@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, List
 from tkinter.ttk import Combobox
 from backend import YoutubeDownloader
 from tkinter import Tk, StringVar, Label, Entry, Button, messagebox
@@ -7,9 +7,9 @@ from tkinter import Tk, StringVar, Label, Entry, Button, messagebox
 class GUI:
     __window: Tk
     __x_axis: int = 180
-    __font = 'arial'
-    __resolutions = ['144p', '240p', '360p', '480p', '720p', '1080p']
-    __stream_options = ['Only video', 'Only audio', 'Video and audio']
+    __font: str = 'arial'
+    __resolutions: List[str] = ['144p', '240p', '360p', '480p', '720p', '1080p']
+    __stream_options: List[str] = ['Only video', 'Only audio', 'Video and audio']
 
     def __init__(self):
         self.__window = Tk()
@@ -81,7 +81,7 @@ class GUI:
 
     def throw_exceptions_if_form_fields_are_not_valid(self) -> None:
         if not self.__user_youtube_url.get():
-            raise Exception('The URL field cannot be empty!')
+            raise Exception('The YouTube URL field cannot be empty!')
 
         if not self.__stream_quality.get():
             raise Exception('Select a stream quality')
