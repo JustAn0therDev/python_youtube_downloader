@@ -2,7 +2,6 @@ import unittest
 from os import path, remove
 from unittest import TestCase
 from backend import YoutubeDownloader
-from enums.streamoption import StreamOption
 
 
 class Tests(TestCase):
@@ -11,7 +10,7 @@ class Tests(TestCase):
     def setUp(self):
         self.__youtube_downloader = YoutubeDownloader(
             youtube_video_link='https://www.youtube.com/watch?v=5IXQ6f6eMxQ', 
-            stream_option=StreamOption.VIDEO_AND_AUDIO,
+            stream_option='Video and audio',
             stream_quality='360p', 
             custom_filename='test_video', 
             directory='')

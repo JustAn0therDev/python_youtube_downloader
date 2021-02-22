@@ -91,13 +91,3 @@ class GUI:
 
     def initialize(self) -> None:
         self.__window.mainloop()
-
-
-gui_instance = GUI()
-
-gui_instance.create_labels()
-gui_instance.create_buttons()
-gui_instance.create_entries()
-gui_instance.create_comboboxes()
-
-gui_instance.initialize()
